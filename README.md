@@ -1,2 +1,3 @@
-# BCC-GeometriaComputacional-T1
-Usado para desenvolvimento do primeiro trabalho da matéria de Geometria Computacional no curso de Ciencia da Computacao na UFPR 
+# Trabalho 1 GeometriaComputacional
+## [Descrição do trabalho](https://www.inf.ufpr.br/andre/Disciplinas/CI1338-INFO7061-2025-1/trabalho1.pdf)
+
