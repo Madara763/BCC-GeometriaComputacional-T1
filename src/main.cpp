@@ -2,10 +2,8 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include "geometry.hpp"
 
-using namespace std;
-#define xx first
-#define yy second
 
 int main(){
 
@@ -18,7 +16,7 @@ int main(){
   //Lista para um vetor de pontos (vertices)
   //[] -> {(x,y), (x,y), (x,y)}
 
-  list<vector<pair<int64_t, int64_t>>> lista{}; //estou pensando sobre como fazer isso da melhor forma
+  list<vector<ponto>> lista{}; //estou pensando sobre como fazer isso da melhor forma
 
   //le os vertices dos m poligonos
   int v;
@@ -27,10 +25,10 @@ int main(){
     
     cin>>v; //le quantos vertices 
     
-    vector<pair<int64_t, int64_t>> vetor(v); //Cria o vetor que armazenara a seq de pontos
+    vector<ponto> vetor(v); //Cria o vetor que armazenara a seq de pontos
 
     for(int j=0; j<v; j++){ //Le as coordenadas de cada vertice
-      cin>>vetor[j].xx>>vetor[j].yy;
+      cin>>vetor[j].x>>vetor[j].y;
     }//for j
     lista.insert
     
