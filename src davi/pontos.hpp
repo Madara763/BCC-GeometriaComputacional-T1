@@ -21,7 +21,7 @@ template <typename T> struct aresta{
 };
 
 template <typename T> struct poligono{
-  std::list<aresta<T>> arestas;
+  std::vector<aresta<T>> arestas;
 };
 
 // Por padrao definiremos as semi retas (sr) tendo 
