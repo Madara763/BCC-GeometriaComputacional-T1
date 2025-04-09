@@ -1,11 +1,11 @@
 CC = g++ -g
-SOURCES = geometry.cpp
+SOURCES = geometry.cpp bentleyOttmann.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 EXEC = main
 
 all: $(EXEC)
 
-$(EXEC): $(OBJECTS)
+$(EXEC): $(OBJECTS) main.cpp
 	$(CC) $(CFLAGS) -o $@ $^
 
 %.o: %.cpp geometry.hpp
@@ -20,6 +20,6 @@ debug: CFLAGS += -DDEBUG
 debug: all
 
 clean:
-	rm -f $(OBJECTS) $(EXEC) intersecao
+	rm -f $(OBJECTS) $(EXEC)
 
 

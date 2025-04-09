@@ -8,35 +8,6 @@ const long double EPS_DESCIDA = 1e-8;
 long double altura_varredura = 0;
 long double xEventoAtual = 0;
 
-/**
- * Comparador customizado de evento
- **/
-struct cmpEvento {
-	bool operator()(const ponto &p, const ponto &q) const {
-		if(abs(p.y - q.y) < EPS)
-			return p.x < q.x;
-
-		return p.y > q.y;
-	}
-};
-
-/**
- * Comparador customizado de segmento
- */
-struct cmpSeg {
-	const long double &y_atual, &x_atual;
-	cmpSeg(const long double &x_ref, const long double &y_ref) : x_atual(x_ref), y_atual(y_ref) {}
-	bool operator()(const seg &s, const seg &q) const {
-		if(ehHorizontal(s) && !ehHorizontal(q)) return x_atual + EPS < q.getX(y_atual);
-		if(!ehHorizontal(s) && ehHorizontal(q)) return s.getX(y_atual) < x_atual + EPS;
-
-		// se os dois segmentos advem do mesmo ponto, não precisa de erro
-		if(ehMesmoPonto(s.p1, q.p1))
-			return s.getX(y_atual) < q.getX(y_atual);
-
-		return s.getX(y_atual) + EPS < q.getX(y_atual);
-	}
-};
 void imprimeSegmentoCompleto(const segmento &s, long double altura_varredura) {
     cout << "Segmento ["
          << "p1=(" << s.p1.x << ", " << s.p1.y << "), "
@@ -341,88 +312,33 @@ vector<ponto> bentleyOttmann(vector<seg> segmentos) {
 	return acharIntersecoes(segmentos);
 }
 
-/**
- * Recebe os pontos e impede de que haja futuramente segmentos horizontais
- */
-vector<ponto> recebePontos(int n) {
-	ponto p, anterior;
-	vector<ponto> pontos;
-
-	// primeiro ponto
-	cin >> p.x >> p.y;
-	pontos.push_back(p);
-	anterior = p;
-
-	// Lê os demais pontos
-	for(int i = 1; i < n; i++) {
-		cin >> p.x >> p.y;
-		if(ehHorizontal({p, anterior})) {
-			if(p.x < anterior.x) {
-				p.y += 1e-4;
-			} else {
-				pontos[i-1].y += 1e-4;
-			}
-		}
-		pontos.push_back(p);
-		anterior = p;
-	}
-	if(ehHorizontal({pontos.front(), anterior})) {
-		if(pontos.front().x < anterior.x) {
-			pontos.front().y += 1e-4;
-		} else {
-			pontos.back().y += 1e-4;  
-		}
-	}
-	return pontos;
-}
-
-seg criaSegmentoOrdenado(ponto p, ponto q) {
-	cmpEvento cmpPonto;
-
-	if(!cmpPonto(p, q)) {
-		swap(p, q);
-	}
-
-	return {p, q};
-}
-
-vector<seg> ordenaArestas(vector<ponto> pontos) {
-	vector<seg> segs;
-
-	// para cada ponto, ordena os mesmos
-	for(int i = 1; i < pontos.size(); i++) {
-		segs.push_back(criaSegmentoOrdenado(pontos[i - 1], pontos[i]));
-	}
-	segs.push_back(criaSegmentoOrdenado(pontos.back(), pontos.front()));
-
-	return segs;
-}
-
-int main() {
-	vector<seg> arestas;
-	vector<ponto> pontos, intersecoes;
-	seg v;
-	int n;
-	ponto p1, p2, aux, start;
-	cin >> n >> n >> n;
-	pontos = recebePontos(n);
+// int main() {
+// 	vector<seg> arestas;
+// 	vector<ponto> pontos, intersecoes;
+// 	seg v;
+// 	int n;
+// 	ponto p1, p2, aux, start;
+// 	cin >> n >> n >> n;
+// 	pontos = recebePontos(n);
 	
-	arestas = ordenaArestas(pontos);
+// 	arestas = ordenaArestas(pontos);
 	
-	// cout << "Quantidade de pontos = " << pontos.size() << "\n";
-	// for (const auto& aresta : arestas) {
-	// 	cout << "(" << aresta.p1.x << ", " << aresta.p1.y << ") -> ";
-	// 	cout << "(" << aresta.p2.x << ", " << aresta.p2.y << ")\n";
-	// }
+// 	intersecoes = bentleyOttmann(arestas);
 	
-	intersecoes = bentleyOttmann(arestas);
+// 	#ifdef DEBUG
+// 	cout << "Quantidade de pontos = " << pontos.size() << "\n";
+// 	for (const auto& aresta : arestas) {
+// 		cout << "(" << aresta.p1.x << ", " << aresta.p1.y << ") -> ";
+// 		cout << "(" << aresta.p2.x << ", " << aresta.p2.y << ")\n";
+// 	}
+	
+// 	cout << pontos.size() << " pontos\n";
+// 	cout << "qntd de intersecoes = " << intersecoes.size() << "\n";
+// 	for(auto it = intersecoes.begin(); it != intersecoes.end(); it++) {
+// 		auto p = *(it);
+// 		cout << "(" << p.x << "," << p.y << ")";
+// 	}
+// 	cout << "\n";
+// 	#endif
 
-	cout << pontos.size() << " pontos\n";
-	cout << "qntd de intersecoes = " << intersecoes.size() << "\n";
-	// for(auto it = intersecoes.begin(); it != intersecoes.end(); it++) {
-	// 	auto p = *(it);
-	// 	cout << "(" << p.x << "," << p.y << ")";
-	// }
-
-	cout << "\n";
-}
+// }

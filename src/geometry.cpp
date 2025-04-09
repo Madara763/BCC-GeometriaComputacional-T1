@@ -179,7 +179,7 @@ bool ehSimples(vector<seg> &arestas){
     // se eh simples, verifica se a quantidade de intersecoes dentro do poligono > vertices/faces do poligono
     if(arestas.size() == intersecoes.size()){
         return true;
-    } else if(arestas.size() > intersecoes.size()){
+    } else if(arestas.size() < intersecoes.size()){
         return false;
     } 
     // aqui eh certeza que houve erro de ponto flutuante. 
@@ -188,4 +188,61 @@ bool ehSimples(vector<seg> &arestas){
         // roda bruteforce nisso. não aguento mais
         return ehSimplesBF(arestas);
     }
+}
+
+vector<ponto> recebePontos(int n) {
+	ponto p, anterior;
+	vector<ponto> pontos;
+
+	// primeiro ponto
+	cin >> p.x >> p.y;
+	pontos.push_back(p);
+	anterior = p;
+
+	// Lê os demais pontos
+	for(int i = 1; i < n; i++) {
+		cin >> p.x >> p.y;
+		if(ehHorizontal({p, anterior})) {
+			if(p.x < anterior.x) {
+				p.y += 1e-4;
+			} else {
+				pontos[i-1].y += 1e-4;
+			}
+		}
+		pontos.push_back(p);
+		anterior = p;
+	}
+	if(ehHorizontal({pontos.front(), anterior})) {
+		if(pontos.front().x < anterior.x) {
+			pontos.front().y += 1e-4;
+		} else {
+			pontos.back().y += 1e-4;  
+		}
+	}
+	return pontos;
+}
+
+/**
+ * Retorna um segmento ordenado com base em cmpEvento
+ */
+seg criaSegmentoOrdenado(ponto p, ponto q) {
+	cmpEvento cmpPonto;
+
+	if(!cmpPonto(p, q)) {
+		swap(p, q);
+	}
+
+	return {p, q};
+}
+
+vector<seg> ordenaArestas(vector<ponto> pontos) {
+	vector<seg> segs;
+
+	// para cada ponto, ordena os mesmos
+	for(int i = 1; i < pontos.size(); i++) {
+		segs.push_back(criaSegmentoOrdenado(pontos[i - 1], pontos[i]));
+	}
+	segs.push_back(criaSegmentoOrdenado(pontos.back(), pontos.front()));
+
+	return segs;
 }
