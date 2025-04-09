@@ -80,4 +80,15 @@ bool ehHorizontal(seg s);
  * Realiza o algoritmo de bentley Ottmann
  */
 vector<ponto> bentleyOttmann(vector<seg> segmentos);
+
+/**
+ * Verifica se o poligono é simples ou nao
+ */
+bool ehSimplesBF(vector<seg> &arestas);
+
+/**
+ * Verifica se o poligono é simples ou nao
+ */
+bool ehSimples(vector<seg> &arestas);
+
 #endif

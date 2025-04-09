@@ -156,3 +156,36 @@ bool ehMesmaCoord(long double a, long double b) {
 bool ehHorizontal(seg s) {
     return ehMesmaCoord(s.p1.y, s.p2.y) && !ehMesmaCoord(s.p1.x, s.p2.x);
 }
+
+bool ehSimplesBF(const vector<seg> &arestas) {
+	for(int i = 0; i < arestas.size(); ++i) {
+		for(int j = i + 1; j < arestas.size(); ++j) {
+			// Ignora arestas consecutivas (incluindo início-fim)
+			if((j == (i + 1) % arestas.size()) ||
+			   (i == 0 && j == arestas.size() - 1))
+				continue;
+
+			seg intersecao;
+			if(haveIntersection(arestas[i], arestas[j], intersecao)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool ehSimples(vector<seg> &arestas){
+    vector<ponto> intersecoes = bentleyOttmann(arestas);
+    // se eh simples, verifica se a quantidade de intersecoes dentro do poligono > vertices/faces do poligono
+    if(arestas.size() == intersecoes.size()){
+        return true;
+    } else if(arestas.size() > intersecoes.size()){
+        return false;
+    } 
+    // aqui eh certeza que houve erro de ponto flutuante. 
+    // pode ocorrer pq ha coord de grandezas diferentes e acumula-se erro
+    else {
+        // roda bruteforce nisso. não aguento mais
+        return ehSimplesBF(arestas);
+    }
+}
