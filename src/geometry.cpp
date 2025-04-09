@@ -11,7 +11,7 @@ using namespace std;
  * 2: se intersectam em um intervalo
  * -1: nao se intersectam
  */
-int haveIntersection(seg v, seg w, seg &intersecao) {
+int temIntersecao(seg v, seg w, seg &intersecao) {
     ponto p = v.p1;
     ponto q = w.p1;
     ponto r = sub_ponto(v.p2, p);
@@ -166,7 +166,7 @@ bool ehSimplesBF(const vector<seg> &arestas) {
 				continue;
 
 			seg intersecao;
-			if(haveIntersection(arestas[i], arestas[j], intersecao)) {
+			if(temIntersecao(arestas[i], arestas[j], intersecao)) {
 				return true;
 			}
 		}

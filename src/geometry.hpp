@@ -68,7 +68,7 @@ typedef struct segmento seg;
 /**
  * Verifica se dois segmentos se interceptam
  */
-int haveIntersection(seg v, seg w, seg &intersecao);
+int temIntersecao(seg v, seg w, seg &intersecao);
 
 
 /**

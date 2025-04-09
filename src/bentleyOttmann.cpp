@@ -142,7 +142,7 @@ void inserirSegmentosArvore(set<seg, cmpSeg> &arvore_seg, vector<seg> v) {
 void acharNovosEventos(seg sl, seg sr, ponto p, multimap<ponto, optional<seg>, cmpEvento> &filaEvento) {
 	seg intersecao;
 
-	if(haveIntersection(sl, sr, intersecao) == 1) {
+	if(temIntersecao(sl, sr, intersecao) == 1) {
 		if(intersecao.p1.y < altura_varredura) {
 			if(filaEvento.find(intersecao.p1) == filaEvento.end()) {
 				#ifdef DEBUG
