@@ -157,7 +157,7 @@ bool ehHorizontal(seg s) {
     return ehMesmaCoord(s.p1.y, s.p2.y) && !ehMesmaCoord(s.p1.x, s.p2.x);
 }
 
-bool ehSimplesBF(const vector<seg> &arestas) {
+bool ehSimplesBF(vector<seg> &arestas) {
 	for(int i = 0; i < arestas.size(); ++i) {
 		for(int j = i + 1; j < arestas.size(); ++j) {
 			// Ignora arestas consecutivas (incluindo início-fim)
