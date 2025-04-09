@@ -21,14 +21,14 @@ template <typename T> struct aresta{
 };
 
 template <typename T> struct poligono{
-  std::vector<aresta<T>> arestas;
+  std::vector<ponto<T>> vertices;
 };
 
 // Por padrao definiremos as semi retas (sr) tendo 
 // sempre o ponto ini como o menor y e o fim com o maior y
 // como se fosse "de baixo para cima"
 template <typename T> struct raycasting{
-  std::vector<aresta<T>> sr;
+  poligono<T> sr;
   T min_x, max_x;
 };
 
@@ -42,5 +42,9 @@ template <typename T> int num_interseccao(raycasting<T> conjunto_sr, ponto<T> po
 // aresta_pol e uma das arestas do poligono
 // sr e a semi reta tracada do ponto ate um ponto certamente fora do poligono 
 template <typename T> bool intersecta(aresta<T> aresta_pol, aresta<T> sr); 
+
+// Recebe um ponto e uma semi reta
+// Retorna true se o ponto esta sobre a sr, false caso contrario
+template <typename T> bool pontoSobreAresta(ponto<T> p, aresta<T> sr);
 
 #endif 
