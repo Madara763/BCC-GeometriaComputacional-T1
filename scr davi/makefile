@@ -2,7 +2,7 @@ CXX = g++
 
 CXXFLAGS = -std=c++17 -Wall
 SRCS = main.cpp raycast.hpp poligono.hpp
-OBJS = $(SRCS:.hpp=.o)
+OBJS = $(SRCS:.cpp=.o)
 
 # Nome do executável
 EXEC = programa
@@ -15,9 +15,12 @@ $(EXEC): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 # mensagens de debug
-debug: CFLAGS += -DDEBUG
-debug: $(EXEC)
+debug: CXXFLAGS += -DDEBUG
+debug: all
 
-# Regra para limpar os arquivos compilados
+# Regra para limpar os arquivos objetos
 clean:
-	rm -f $(OBJS) $(EXEC)
+	rm -f *.o
+
+purge:
+	rm -f $(EXEC) *.o
