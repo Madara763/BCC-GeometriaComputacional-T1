@@ -176,6 +176,14 @@ bool ehSimplesBF(vector<seg> &arestas) {
 
 bool ehSimples(vector<seg> &arestas){
     vector<ponto> intersecoes = bentleyOttmann(arestas);
+    #ifdef DEBUG
+    cout << "qntd de intersecoes = " << intersecoes.size() << "\n";
+    for(auto it = intersecoes.begin(); it != intersecoes.end(); it++) {
+        auto p = *(it);
+        cout << "(" << p.x << "," << p.y << ")";
+    }
+    cout << "\n";
+    #endif
     // se eh simples, verifica se a quantidade de intersecoes dentro do poligono > vertices/faces do poligono
     if(arestas.size() == intersecoes.size()){
         return true;

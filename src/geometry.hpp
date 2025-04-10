@@ -90,7 +90,8 @@ struct cmpSeg {
 	const long double &y_atual, &x_atual;
 	cmpSeg(const long double &x_ref, const long double &y_ref) : x_atual(x_ref), y_atual(y_ref) {}
 	bool operator()(const seg &s, const seg &q) const {
-		if(ehHorizontal(s) && !ehHorizontal(q)) return x_atual + EPS < q.getX(y_atual);
+		//aqui garante que se dois segmentos voltem para a arvore, o horizontal sempre fique por ultimo
+        if(ehHorizontal(s) && !ehHorizontal(q)) return x_atual + EPS < q.getX(y_atual);
 		if(!ehHorizontal(s) && ehHorizontal(q)) return s.getX(y_atual) < x_atual + EPS;
 
 		// se os dois segmentos advem do mesmo ponto, não precisa de erro

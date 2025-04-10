@@ -79,31 +79,8 @@ void apagarSegmentosArvore(set<seg, cmpSeg> &arvore_seg, vector<seg> v) {
 }
 
 void inserirSegmentosArvore(set<seg, cmpSeg> &arvore_seg, vector<seg> v) {
-	vector<seg> horizontais;  // segmentos horizontais por ultimo
 	for(auto it = v.begin(); it != v.end(); it++) {
-		if(ehHorizontal(*it)){
-			horizontais.push_back(*it);
-		} else {
-			auto [inserted_it, inserted] = arvore_seg.insert(*it);
-
-			// if (!inserted) {
-			// 	cout << "Não inseriu o segmento ";
-			// 	imprimeSegmentoCompleto(*it, altura_varredura);
-			// 	for (const auto &seg_existente : arvore_seg) {
-			// 		cmpSeg cmp(xEventoAtual, altura_varredura);
-			// 		if (!cmp(*it, seg_existente) && !cmp(seg_existente, *it)) {
-			// 			cout << "Segmento considerado igual ao existente:" << endl;
-			// 			imprimeSegmentoCompleto(seg_existente, altura_varredura);
-			// 			cout << "Novo: getX = " << it->getX(altura_varredura) << endl;
-			// 			cout << "Existente: getX = " << seg_existente.getX(altura_varredura) << endl;
-			// 		}
-			// 	}
-			// }
-		}
-	}
-	while(!horizontais.empty()) {
-		arvore_seg.insert(horizontais.back());
-		horizontais.pop_back();
+		arvore_seg.insert(*it);
 	}
 }
 
@@ -121,7 +98,7 @@ void acharNovosEventos(seg sl, seg sr, ponto p, multimap<ponto, optional<seg>, c
 				#endif
 				filaEvento.insert({intersecao.p1, {}});
 			}
-		} else if(intersecao.p1.x > p.x) {
+		} else if(intersecao.p1.y == altura_varredura && intersecao.p1.x > p.x) {
 			if(filaEvento.find(intersecao.p1) == filaEvento.end()) {
 				#ifdef DEBUG
 				cout << "adicionado evento (" << intersecao.p1.x << "," << intersecao.p1.y << ")\n";

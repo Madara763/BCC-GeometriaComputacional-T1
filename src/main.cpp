@@ -1,39 +1,41 @@
-#include <cstdlib>
-#include <iostream>
-#include <vector>
-#include <list>
+#include <bits/stdc++.h>
 #include "geometry.hpp"
 
+using namespace std;
 
-int main(){
+int main() {
+	int qntdPoligonos, qntdPontos, n;
+    vector<vector<seg>> poligonos;
+    vector<ponto> pontos;
+	cin >> qntdPoligonos >> qntdPontos;
 
-  //Leitura dos dados
-  int m,n; //quantidade de poligonos e pontos respectivamente
-  
-  cin>>m>>n;
+	for(int i = 0; i < qntdPoligonos; ++i) {
+        cin >> n;
+        vector<seg> arestas(n);
 
-  //Aloca a estrutura para os poligonos
-  //Lista para um vetor de pontos (vertices)
-  //[] -> {(x,y), (x,y), (x,y)}
+		arestas = ordenaArestas(recebePontos(n));
+        poligonos.push_back(arestas);
 
-  list<vector<ponto>> lista{}; //estou pensando sobre como fazer isso da melhor forma
+        #ifdef DEBUG
+		cout << "Quantidade de pontos = " << pontos.size() << "\n";
+		for(const auto& aresta : arestas) {
+			cout << "(" << aresta.p1.x << ", " << aresta.p1.y << ") -> ";
+			cout << "(" << aresta.p2.x << ", " << aresta.p2.y << ")\n";
+		}        
+        cout << pontos.size() << " pontos\n";
 
-  //le os vertices dos m poligonos
-  int v;
-  int64_t x,y;
-  for(int i=0; i<m; i++){
+        #endif
+		cout << i + 1 << (ehSimples(arestas) ? " simples" : " nao simples") << endl;
+	}
+
+    for (int i = 0; i < qntdPontos; i++) {
+        ponto p;
+        cin >> p.x >> p.y;
+        pontos.push_back(p);
+
+        // aqui eh verificar se o ponto ta dentro de quais poligonos
+    }
     
-    cin>>v; //le quantos vertices 
-    
-    vector<ponto> vetor(v); //Cria o vetor que armazenara a seq de pontos
 
-    for(int j=0; j<v; j++){ //Le as coordenadas de cada vertice
-      cin>>vetor[j].x>>vetor[j].y;
-    }//for j
-    lista.insert
-    
-  }//for i
-
-
-  return 0;
+	return 0;
 }
