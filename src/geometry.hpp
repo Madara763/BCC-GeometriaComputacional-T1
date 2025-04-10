@@ -105,7 +105,7 @@ struct cmpSeg {
 /**
  * Verifica se dois segmentos se interceptam
  */
-int temIntersecao(seg v, seg w, seg &intersecao);
+int temIntersecao(seg v, seg w, seg *intersecao = nullptr);
 
 /**
  * Realiza o algoritmo de bentley Ottmann

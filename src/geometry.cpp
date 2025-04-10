@@ -11,7 +11,7 @@ using namespace std;
  * 2: se intersectam em um intervalo
  * -1: nao se intersectam
  */
-int temIntersecao(seg v, seg w, seg &intersecao) {
+int temIntersecao(seg v, seg w, seg *intersecao) {
     ponto p = v.p1;
     ponto q = w.p1;
     ponto r = sub_ponto(v.p2, p);
@@ -60,8 +60,8 @@ int temIntersecao(seg v, seg w, seg &intersecao) {
             #ifdef DEBUG
             cout << "Colineares e coincidentes entre (" << start.x << "," << start.y << ") e (" << end.x << "," << end.y << ")\n"; 
             #endif
-            intersecao.p1 = start;
-            intersecao.p2 = end;
+            intersecao->p1 = start;
+            intersecao->p2 = end;
 
             if(t_start == t_end) return 1;
             
@@ -102,7 +102,7 @@ int temIntersecao(seg v, seg w, seg &intersecao) {
             #ifdef DEBUG
             cout << "Se intersectam em (" << pInt.x << "," << pInt.y << ")\n";
             #endif
-            intersecao.p1 = pInt;
+            intersecao->p1 = pInt;
 
             return 1;
         }
@@ -166,7 +166,7 @@ bool ehSimplesBF(vector<seg> &arestas) {
 				continue;
 
 			seg intersecao;
-			if(temIntersecao(arestas[i], arestas[j], intersecao)) {
+			if(temIntersecao(arestas[i], arestas[j], &intersecao)) {
 				return true;
 			}
 		}

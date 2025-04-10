@@ -90,7 +90,7 @@ void inserirSegmentosArvore(set<seg, cmpSeg> &arvore_seg, vector<seg> v) {
 void acharNovosEventos(seg sl, seg sr, ponto p, multimap<ponto, optional<seg>, cmpEvento> &filaEvento) {
 	seg intersecao;
 
-	if(temIntersecao(sl, sr, intersecao) == 1) {
+	if(temIntersecao(sl, sr, &intersecao) == 1) {
 		if(intersecao.p1.y < altura_varredura) {
 			if(filaEvento.find(intersecao.p1) == filaEvento.end()) {
 				#ifdef DEBUG
@@ -166,7 +166,10 @@ void tratarEvento(set<seg, cmpSeg> &arvore_seg, vector<ponto> &intersecao, multi
 			superiores.push_back(it->second.value());
 		}
 	}
+
+	#ifdef DEBUG // vetor de debug
 	std::vector<seg> debug_vec(arvore_seg.begin(), arvore_seg.end());
+	#endif
 
 	if(auto it = arvore_seg.lower_bound(pontoToSeg);
 	   it != arvore_seg.end() && ((ehMesmaCoord((*it).p1.y, p.y) &&
@@ -213,11 +216,22 @@ void tratarEvento(set<seg, cmpSeg> &arvore_seg, vector<ponto> &intersecao, multi
 	inserirSegmentosArvore(arvore_seg, interiores);
 	altura_varredura = aux;
 
+	// caso U(p) U C(p) = {}
 	if(superiores.size() + interiores.size() == 0) {
-		segEsquerda = arvore_seg.lower_bound(pontoToSeg);
-		segDireita = segEsquerda;
-		if(segEsquerda != arvore_seg.begin() && segDireita != --arvore_seg.end())
-			acharNovosEventos(*(--segEsquerda), *(++segDireita), p, filaEvento);
+		// se houver mais de 2 elementos em T, p pode ter vizinhos em T
+		if(arvore_seg.size() < 2) return;
+
+		// pega os vizinhos de p em T e os insere
+		segDireita = arvore_seg.lower_bound(pontoToSeg);
+
+		// se isso REALMENTE for o vizinho, então o ponto nao esta no segmento
+		if(temIntersecao(*segDireita, pontoToSeg) == -1){
+			segEsquerda = prev(segDireita);
+
+			// caso segmento da direita nao existir ou ele ser o primeiro (aí nao tem segmento da esquerda)
+			if(segDireita != arvore_seg.end() && segDireita != arvore_seg.begin())
+				acharNovosEventos(*(segEsquerda), *(segDireita), p, filaEvento);
+		}
 	} else {
 		superiores.insert(superiores.end(), interiores.begin(), interiores.end());
 		altura_varredura -= EPS_DESCIDA;
