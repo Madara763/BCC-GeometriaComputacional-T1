@@ -1,6 +1,6 @@
 /*
   Biblioteca define funcoes para utilizacao do algoritmo Ray Casting
-  Criado por Davi Garcia Lazzarin 
+  Criado por Davi Garcia Lazzarin  e Matheus Telles Batista
   Data: 07/04/25
 */
 
@@ -127,19 +127,19 @@ template <typename T> bool raycast(const ponto<T>& p, const poligono<T>& pol) {
     {
     case VERTICE_ALINHADO: //Conta uma interseccao
       cruzamentos++;
-      continue;
       break;
       
     case VERTICE_AGUDO: // ignora a intersecsao
       break;
 
-    default: // Nao passa sobre um vertice
+    default: // Nao passa sobre um vertice, pode intersectar o meio de uma aresta
 
       // Garante que o inicio da semireta esta sempre "abaixo" do fim
       if (sr.ini.y > sr.fim.y) std::swap(sr.ini, sr.fim);
       
       // Verifica se a semi reta cruza a aresta
       // ponto esta entre os limites sup e inf da sr no eixo y 
+      // ignora caso passe em cima das pontas
       if ( (p.y > sr.ini.y - EPS && p.y < sr.fim.y - EPS) && (!(std::abs(sr.ini.y - p.y) < EPS ) && !(std::abs(sr.fim.y - p.y) < EPS)) ) { 
         
         // Acha o ponto x em que a reta horizontal do ponto cruza a sr
@@ -152,6 +152,7 @@ template <typename T> bool raycast(const ponto<T>& p, const poligono<T>& pol) {
       }
       break;
     };//switch
+
   }//for
 
   // Retorna true se impar, false se par

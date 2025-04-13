@@ -53,14 +53,38 @@ int main(){
   }
   #endif
 
+  int num_poligono = 1;
+
+  for(auto it{lista_poligonos.begin()};it != lista_poligonos.end(); ++it){  
+    switch (tipo_poligono((*it)))
+    {
+    case CONVEXO:
+      (it)->tipo = CONVEXO;
+      cout<<num_poligono<<" simples e convexo\n";
+      break; 
+    case NAO_CONVEXO:
+    (it)->tipo = NAO_CONVEXO;
+      cout<<num_poligono<<" simples e nao convexo\n";
+      break;
+    
+    case NAO_SIMPLES:
+      (it)->tipo = NAO_SIMPLES;
+      cout<<num_poligono<<" nao simples\n";
+      break;
+    
+    default:
+      break;
+    }
+  }// for poligonos
+
   // Verifica dentro de quais poligonos o ponto esta
   int num_ponto = 1;
   for(auto itp{lista_pontos.begin()};itp != lista_pontos.end(); ++itp){
     
-    int num_poligono = 1;
+    num_poligono = 1;
     cout<<num_ponto<<":";
     
-    for(auto it{lista_poligonos.begin()};it != lista_poligonos.end(); ++it){  
+    for(auto it{lista_poligonos.begin()};it != lista_poligonos.end(); ++it){  //isola os nao simples
       if( raycast( (*itp), (*it)) ){
         cout<<num_poligono<<" ";
       }
