@@ -23,4 +23,4 @@ clean:
 	rm -f *.o
 
 purge:
-	rm -f $(EXEC) *.o
+	rm -f  $(EXEC) *.o
