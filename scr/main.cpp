@@ -89,11 +89,11 @@ int main(){
     for(auto it{lista_poligonos.begin()};it != lista_poligonos.end(); ++it){  
 
       if((*it).tipo != NAO_SIMPLES ){ //isola os nao simples
-        if( raycast( (*itp), (*it)) ){
+        if( raycast( (*itp), (*it)) )
           cout<<num_poligono<<" ";
-        }
-        num_poligono++;
+        
       }//if simples
+      num_poligono++;
     }// for poligonos
     
     cout<<"\n";

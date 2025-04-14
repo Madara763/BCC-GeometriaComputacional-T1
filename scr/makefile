@@ -1,6 +1,6 @@
 CXX = g++
 
-CXXFLAGS = -std=c++17 -Wall -Wextra
+CXXFLAGS = -std=c++17 -Wall -Wextra -g
 SRCS = main.cpp raycast.hpp poligono.hpp 
 OBJS = $(SRCS:.cpp=.o)
 

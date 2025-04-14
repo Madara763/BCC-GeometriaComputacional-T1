@@ -6,6 +6,7 @@
 */
 
 #include <vector>
+#include <iostream>
 
 #ifndef _POLIGONO_
 #define _POLIGONO_
@@ -13,9 +14,10 @@
 // ====================================== Definicoes ======================================
 
 //Alterar o tipo confome implementacao
-const long double EPS = 1E-9;
+const double EPS = 1E-9;
 
 enum tipo_p{SEM_TIPO, CONVEXO, NAO_CONVEXO, NAO_SIMPLES };
+enum tipo_interseccao{EM_UM_PONTO, EM_UM_INTERVALO};
 
 template <typename T> struct ponto {
   T x, y; 
@@ -69,13 +71,22 @@ template <typename T> std::vector<aresta<T>> converte_poligono(const poligono<T>
   for(int i=0; i < n; i++ ){  
     aresta<T> ar;
     ar.ini = pol.vertices[i];
-    ar.ini = pol.vertices[(i+1) % n];
+    ar.fim = pol.vertices[(i+1) % n];
     novo_pol.push_back(ar);
   }
   return novo_pol;
 }
 
 // Verifica se dois segmentos se interceptam
+// Algoritmo realizado graças a https://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect#comment69866544_565282
+// obrigado a https://stackoverflow.com/users/68063/gareth-rees
+/**
+ * @param intersecao valor passado por referencia, caso haja intersecao
+ * Verifica se dois segmentos possuem intersecao
+ * 1: se intersectam em um ponto apenas
+ * 2: se intersectam em um intervalo
+ * -1: nao se intersectam
+ */
 template <typename T> int tem_Intersecao(aresta<T> v, aresta<T> w, aresta<T> *intersecao) {
   ponto<T> p = v.ini;
   ponto<T> q = w.ini;
@@ -93,11 +104,11 @@ template <typename T> int tem_Intersecao(aresta<T> v, aresta<T> w, aresta<T> *in
   denom = prod_vetorial(r, s);
 
   #ifdef DEBUG        
-  std::cout << "p: " << p.x << " " << p.y << endl;
-  std::cout << "q: " << q.x << " " << q.y << endl;
-  std::cout << "r: " << r.x << " " << r.y << endl;
-  std::cout << "s: " << s.x << " " << s.y << endl;
-  std::cout << "denom: " << denom << endl;
+  std::cout << "p: " << p.x << " " << p.y << "\n";
+  std::cout << "q: " << q.x << " " << q.y << "\n";
+  std::cout << "r: " << r.x << " " << r.y << "\n";
+  std::cout << "s: " << s.x << " " << s.y << "\n";
+  std::cout << "denom: " << denom << "\n";
   #endif    
   if(denom == 0 && uNum == 0) {
       // Colineares
@@ -134,7 +145,7 @@ template <typename T> int tem_Intersecao(aresta<T> v, aresta<T> w, aresta<T> *in
       } 
       else { // colineares e disjuntos
           #ifdef DEBUG
-          std::cout << "Colineares e disjuntos" << endl;
+          std::cout << "Colineares e disjuntos" << "\n";
           #endif
           return -1;
       }
@@ -142,7 +153,7 @@ template <typename T> int tem_Intersecao(aresta<T> v, aresta<T> w, aresta<T> *in
   //r × s = 0 and (q − p) × r ≠ 0: paralelas e nao coincidentes
   else if(denom == 0 && prod_vetorial(sub_point(q, p) , r) != 0) {
       #ifdef DEBUG
-      std::cout << "Paralelas e nao coincidentes" << endl;
+      std::cout << "Paralelas e nao coincidentes" << "\n";
       #endif
       return -1;
   }
@@ -153,10 +164,10 @@ template <typename T> int tem_Intersecao(aresta<T> v, aresta<T> w, aresta<T> *in
       t = tNum / denom;
       
       #ifdef DEBUG        
-      std::cout << "uNum: " << uNum << endl;
-      std::cout << "tNum: " << tNum << endl;
-      std::cout << "u: " << u << endl;
-      std::cout << "t: " << t << endl;
+      std::cout << "uNum: " << uNum << "\n";
+      std::cout << "tNum: " << tNum << "\n";
+      std::cout << "u: " << u << "\n";
+      std::cout << "t: " << t << "\n";
       #endif
 
       //se intersectam no point p + t r 
@@ -181,16 +192,22 @@ template <typename T> bool eh_simplesBF(const poligono<T>& pol) {
 
   std::vector<aresta<T>> arestas = converte_poligono(pol);
 
-	for(int i = 0; i < static_cast<int>( arestas.size() ); ++i) {
-		for(int j = i + 1; j < static_cast<int>( arestas.size()); ++j) {
+  for(int i = 0; i < static_cast<int>( arestas.size() ); ++i) {
+    for(int j = i + 1; j < static_cast<int>( arestas.size()); ++j) {
 
-			aresta<T> intersecao;
-			if(tem_Intersecao(arestas[i], arestas[j], &intersecao)) 
-				return false;
-			
-		}
-	}
-	return true;
+      aresta<T> intersecao;
+      if((j == i + 1) || (i == 0 && j == static_cast<int> (arestas.size() - 1))){
+        if(tem_Intersecao(arestas[i], arestas[j], &intersecao) == 2) 
+          return false;
+      }
+      else{ 
+        if(tem_Intersecao(arestas[i], arestas[j], &intersecao) == 1) 
+          return false;
+      }
+      
+    }
+  }
+    return true;
 }
 
 // Classifica um poligono pelos tipos definidos no ENUM tipo_p
