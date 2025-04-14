@@ -5,7 +5,7 @@ SRCS = main.cpp raycast.hpp poligono.hpp
 OBJS = $(SRCS:.cpp=.o)
 
 # Nome do executável
-EXEC = programa
+EXEC = poligonos
 
 # Regra padrão
 all: $(EXEC)
