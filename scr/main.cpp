@@ -64,7 +64,7 @@ int main(){
       cout<<num_poligono<<" simples e convexo\n";
       break; 
     case NAO_CONVEXO:
-    (it)->tipo = NAO_CONVEXO;
+      (it)->tipo = NAO_CONVEXO;
       cout<<num_poligono<<" simples e nao convexo\n";
       break;
     
