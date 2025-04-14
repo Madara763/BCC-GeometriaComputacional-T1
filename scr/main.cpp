@@ -1,4 +1,5 @@
 #include <iostream>
+#include "poligono.hpp"
 #include "raycast.hpp"
 
 using namespace std;
@@ -75,6 +76,7 @@ int main(){
     default:
       break;
     }
+    num_poligono++;
   }// for poligonos
 
   // Verifica dentro de quais poligonos o ponto esta
@@ -84,11 +86,14 @@ int main(){
     num_poligono = 1;
     cout<<num_ponto<<":";
     
-    for(auto it{lista_poligonos.begin()};it != lista_poligonos.end(); ++it){  //isola os nao simples
-      if( raycast( (*itp), (*it)) ){
-        cout<<num_poligono<<" ";
-      }
-      num_poligono++;
+    for(auto it{lista_poligonos.begin()};it != lista_poligonos.end(); ++it){  
+
+      if((*it).tipo != NAO_SIMPLES ){ //isola os nao simples
+        if( raycast( (*itp), (*it)) ){
+          cout<<num_poligono<<" ";
+        }
+        num_poligono++;
+      }//if simples
     }// for poligonos
     
     cout<<"\n";

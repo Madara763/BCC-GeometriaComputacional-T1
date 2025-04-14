@@ -18,11 +18,6 @@
 #define VERTICE_ALINHADO 1
 #define VERTICE_AGUDO 2
 
-
-//Alterar o tipo confome implementacao
-const long double EPS = 1E-9; 
-
-
 // ====================================== Auxiliares ======================================
 
 // Sobrecarga para impressao do ponto 
@@ -52,12 +47,14 @@ template <typename T> int ponto_no_vertice(const ponto<T>& p, const poligono<T>&
       ini = meio - 1;
     
     // Caso especial
-    if (std::abs(pol.vertices[ini].y - pol.vertices[meio].y) < EPS){
+    // meio e fim de aresta horizontal 
+    // define inicio como um ponto diferente
+    while( (std::abs(pol.vertices[ini].y - pol.vertices[meio].y) < EPS) ){
       if(ini == 0)
         ini = pol.vertices.size() - 1;
-      else  
+      else
         ini--;
-    }
+    }  
 
     // Definidos os 3 pontos que formam as 2 arestas
     #ifdef DEBUG
@@ -123,7 +120,7 @@ template <typename T> bool raycast(const ponto<T>& p, const poligono<T>& pol) {
     if (std::abs(sr.ini.y - sr.fim.y) < EPS) continue;
 
     // Ponto passa pelo vertice
-    switch ( ponto_no_vertice(p, pol, i ))
+    switch( ponto_no_vertice(p, pol, i) )
     {
     case VERTICE_ALINHADO: //Conta uma interseccao
       cruzamentos++;

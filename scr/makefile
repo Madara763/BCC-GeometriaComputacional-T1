@@ -1,7 +1,7 @@
 CXX = g++
 
-CXXFLAGS = -std=c++17 -Wall
-SRCS = main.cpp raycast.hpp poligono.hpp
+CXXFLAGS = -std=c++17 -Wall -Wextra
+SRCS = main.cpp raycast.hpp poligono.hpp 
 OBJS = $(SRCS:.cpp=.o)
 
 # Nome do executável
